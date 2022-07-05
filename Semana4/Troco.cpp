@@ -1,12 +1,13 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
-const int NGRANDE = 987654321;
+const ll NGRANDE = 1987654321987654321;
 
-vector<vector<int>> vetor_resultados (30000, vector<int> (5, NGRANDE));
-vector<int> vetor_moedas (5,0);
+vector<vector<ll>> vetor_resultados (30001, vector<ll> (5, NGRANDE));
+vector<ll> vetor_moedas (5,0);
 
-int encontra_possibilidades (int valor, int moeda_max){
+ll encontra_possibilidades (int valor, int moeda_max){
 	if (valor < 0)
 		return (0);
 
@@ -17,10 +18,9 @@ int encontra_possibilidades (int valor, int moeda_max){
 		return (vetor_resultados[valor][moeda_max]);
 	}
 
-	int soma_possibilidades = 0;
+	ll soma_possibilidades = 0;
 	
-	for (int i = 0 ; i < 5 ; i++)
-		if (vetor_moedas[i] <= vetor_moedas[moeda_max])
+	for (int i = 0 ; i <= moeda_max ; i++)
 			soma_possibilidades += encontra_possibilidades (valor - vetor_moedas[i], i);
 
 	vetor_resultados[valor][moeda_max] = soma_possibilidades;
@@ -36,7 +36,7 @@ int main() {
 
 	int n;
 	while (cin >> n){
-		int aux = encontra_possibilidades (n, 50);
+		ll aux = encontra_possibilidades (n, 4);
 		cout << aux << "\n";
 	}
 }
