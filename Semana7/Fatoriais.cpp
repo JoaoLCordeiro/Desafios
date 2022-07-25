@@ -2,11 +2,22 @@
 using namespace std;
 using ll = unsigned long long;
 
-double acha_log (int n){
-	double digitos = 0;
+vector<double> v_digitos (1e7+1, 0);
+int maior_digito = 1;
 
-	for (int i = 2 ; i <= n ; i++)
-		digitos += log10 (i);
+double acha_log (int n){
+	double digitos;
+
+	if (maior_digito < n){
+		digitos = v_digitos[maior_digito];
+		for (int i = maior_digito+1 ; i <= n ; i++){
+			digitos += log10 (i);
+			v_digitos[i] = digitos;
+		}
+		maior_digito = n;
+	}
+	else
+		digitos = v_digitos[n];
 
 	return digitos;
 }
