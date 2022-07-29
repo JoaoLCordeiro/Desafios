@@ -2,51 +2,55 @@
 using namespace std;
 using ll = long long;
 
-vector<bool>	primos (1e5+1, true);
-vector<int>		s_primos (12, true);
+vector<bool> primos(112345 + 1, true);
+vector<int> v_primos;
 
-ll multiplicacao (int quant){
-	ll mult = 1;
-	for (int i = 0 ; i < quant ; i++)
-		mult *= s_primos[i];
-
-	return mult;
-}
-
-void imprime_vetor (int k){
-	for (int i = 0 ; i < k ; i++)
-		cout << s_primos[i] << " ";
+void imprime_vetor()
+{
+	for (int i : v_primos)
+		cout << i << " ";
 	cout << endl;
 }
 
-int main() {
-	int n, k;
-	cin >> n >> k;
+int main()
+{
+	int t;
+	cin >> t;
 
-	primos[0]	= false;
-	primos[1]	= false;
+	primos[0] = false;
+	primos[1] = false;
 
-	for (int i = 2 ; i <= int(1e5/2) ; i++){
-		for (int j = i*i ; j <= int(1e5) ; j += i)
+	for (int i = 2; i <= sqrt(112345); i++)
+	{
+		for (int j = i * i; j <= 112345; j += i)
 			primos[j] = false;
 	}
 
-	/*int indice = n;
-	for (int i = 0 ; i < k ; i++){
-		while (primos[indice] == false)
-			indice--;
-		s_primos[i] = indice;
-		indice--;
+	for (int i = 2; i <= 112345; i++)
+		if (primos[i] == true)
+			v_primos.push_back(i);
+
+	//imprime_vetor();
+
+	while (t--)
+	{
+
+		ll n, k;
+		cin >> n >> k;
+		// tenho um vetor com todos os primos até sqrt(n)
+
+		ll j;
+		ll mult = 1;
+		for (j = 0 ; j < k ; j++)
+			mult *= v_primos[j];
+
+		for (j = k ; j < n ; j++){
+			mult /= v_primos[j-k];
+			mult *= v_primos[j];
+			if (mult > n)
+				break;
+		}
+
+		cout << (mult/v_primos[j]) * v_primos[j-k] << endl;
 	}
-
-	while (multiplicacao(k) > n){
-		for (int i = 0 ; i < k-1 ; i++)
-			s_primos[i] = s_primos[i+1];
-
-		while (primos[indice] == false)
-			indice--;
-		s_primos[k-1] = indice;
-	}
-
-	imprime_vetor(k);*/
 }
