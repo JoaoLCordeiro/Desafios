@@ -4,6 +4,7 @@ using parint = pair<int,int>;
 
 vector <vector <int>> grafo (100);
 int tk = 0;
+
 vector<int> tin (100, -1);
 vector<int> low (100);
 
@@ -23,7 +24,7 @@ void dfs(int v1, int pai){
 
 	for (auto v2 : grafo[v1]){
 		if (v2 == pai)
-			continue
+			continue;
 		else if (tin[v2] == -1){
 			dfs(v2, v1);
 			ch++;
@@ -39,6 +40,30 @@ void dfs(int v1, int pai){
 		else{
 			low[v1] = minimo(low[v1], low[v2]);
 		}
+	}
+}
+
+void limpa_pontes(){
+	while (! pontes.empty()){
+		pontes.pop_back();
+	}
+}
+
+void limpa_articulacoes(){
+	articulacoes.clear();
+}
+
+void reseta_tin_low(){
+	for (int i = 0 ; i < 100 ; i++){
+		tin[i] = -1;
+		low[i] = 0;
+	}
+}
+
+void limpa_grafo(){
+	for (int i = 0 ; i < 100 ; i++){
+		while (! grafo[i].empty())
+			grafo[i].pop_back();
 	}
 }
 
@@ -60,6 +85,14 @@ int main() {
 			grafo[v2].push_back(v1);
 		}
 
+		for (int vertice = 0 ; vertice < n_vertices ; vertice++)
+			dfs(vertice, vertice);
+
 		cout << pontes.size() << endl;
+		tk = 0;
+		limpa_pontes();
+		limpa_articulacoes();
+		limpa_grafo();
+		reseta_tin_low();
 	}
 }
