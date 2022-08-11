@@ -38,15 +38,13 @@ void dfs(int v1, int pai){
 			low[v1] = minimo(low[v1], low[v2]);
 		}
 		else{
-			low[v1] = minimo(low[v1], low[v2]);
+			low[v1] = minimo(low[v1], tin[v2]);
 		}
 	}
 }
 
 void limpa_pontes(){
-	while (! pontes.empty()){
-		pontes.pop_back();
-	}
+	pontes.clear();
 }
 
 void limpa_articulacoes(){
@@ -61,10 +59,8 @@ void reseta_tin_low(){
 }
 
 void limpa_grafo(){
-	for (int i = 0 ; i < 100 ; i++){
-		while (! grafo[i].empty())
-			grafo[i].pop_back();
-	}
+	for (int i = 0 ; i < 100 ; i++)
+		grafo[i].clear();
 }
 
 void limpa_e_reseta(){
