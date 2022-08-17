@@ -6,7 +6,7 @@ using ii = pair<int, int>;
 const int N = 1e5+15;
 vector<vector<ii>> g (N);
 #define NEUTRAL 0
-#define OP(X, Y) max(X, Y)
+#define OP(X, Y) X + Y
 
 const int L = log2(N);
 vector<ll> depth (N, 0);
@@ -81,13 +81,6 @@ ll bl_op(int a, int b) {
 	return OP(res, OP(weiop[a][0], weiop[b][0]));
 }
 
-int absoluto(int a, int b){
-	if (a - b < 0)
-		return (b - a);
-	else
-		return (a - b);
-}
-
 int main() {
 	int n_lugares;
 	cin >> n_lugares;
@@ -105,6 +98,6 @@ int main() {
 	cin >> n_consultas;
 	while (n_consultas--) {
 		int u, v; cin >> u >> v;
-		cout << bl_op(u, v) + bl_op(v, u) << "\n";
+		cout << bl_op(u, v) << "\n";
 	}
 }
