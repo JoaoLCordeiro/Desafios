@@ -58,8 +58,8 @@ pair<ll,ll> ffek (ll vertice1, ll vertice2){
 			edges[ix[u]^1].cap += flow;
 		}
 
-		//min_cost += flow * dist[vertice2];
-		min_cost++;
+		min_cost += flow * dist[vertice2];
+		//min_cost++;
 		max_flow += flow;
 	}
 
@@ -77,14 +77,14 @@ int main() {
 		cruz1--;
 		cruz2--;
 
-		res[pc1].push_back (edges.size());
+		res[cruz1].push_back (edges.size());
 		edges.push_back ({ cruz1, cruz2, 1 });
 
-		res[pc2].push_back (edges.size());
-		edges.push_back ({ cruz2, cruz1, 0 });
+		res[cruz2].push_back (edges.size());
+		edges.push_back ({ cruz2, cruz1, 1 });
 	}
 
 	auto [min_cost, max_flow] = ffek (0, quant_pcs-1);
 
-	cout << min_cost << endl;
+	cout << max_flow << endl;
 }
