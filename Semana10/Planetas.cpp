@@ -1,63 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
+using matrizint = vector<vector<int>>;
 
-int teleporta_passos (vector<int> &v_tp, int n_p, int origem, int n_passos){
-	vector<int> escolhido		(n_p+1);
-	vector<int> planeta_passo	(n_passos);
+const int MAXLINHAS = log2(1123456789) + 1;
 
-	int planeta_atual = origem;
-	for (int passo = 1 ; passo <= n_passos ; passo++){
-		//se o tp for pra ele mesmo
-		if (v_tp[planeta_atual] == planeta_atual)
-			return (planeta_atual);
-
-		//testa o ciclo
-		//nao encontrou o ciclo
-		if (escolhido[planeta_atual] == 0){
-			//guarda o passo que o movimento chegou ali
-			escolhido[planeta_atual] = passo;
-
-			//pega o planeta atual
-			planeta_atual = v_tp[planeta_atual];
-
-			//guarda o planeta que chegou naquele passo
-			planeta_passo[passo] = planeta_atual;
+void monta_matriz (matrizint &m, int n){
+	for (int linha = 1 ; linha <= MAXLINHAS ; linha++)
+		for (int coluna = 1 ; coluna <= n ; coluna++){
+			//cout << "vai escrever na m[" << linha << "," << coluna << "] o m[" << linha-1 << "," <<  m[linha-1][coluna] << "]" << endl;
+			m[linha][coluna] = m[linha-1][m[linha-1][coluna]];
 		}
-		//encontrou ciclo
-		else{
-			//encontra quantos passos devem ser feitos sem contar ciclos
-			int passos_ciclo		= passo - escolhido[planeta_atual];
-			int passos_restantes	= n_passos - passo + 1;				//remover o +1 na solução antiga
-			int passos_andar		= passos_restantes % passos_ciclo;
+}
 
-			//anda os passos
-			planeta_atual = planeta_passo[ escolhido[planeta_atual] + passos_andar - 1 ];
-			/*for (int passo_r = 1 ; passo_r <= passos_restantes ; passo_r++)
-				planeta_atual = v_tp[planeta_atual];*/
-			return planeta_atual;
+int viaja (matrizint &m, int origem, int viagens){
+	int planeta = origem;
+	for (int i = MAXLINHAS ; i >= 0 ; i--)
+		if (viagens & (1 << i)){
+			//cout << "viajou do planeta " << planeta << " pro " << m[i][planeta] << " pulando n log 2 = " << i << " passos" << endl;
+			planeta = m[i][planeta];
 		}
-	}
-	return planeta_atual;
+
+	return planeta;
 }
 
 int main() {
 	int n_planetas, n_consultas;
 	cin >> n_planetas >> n_consultas;
 
-	vector<int>		v_teleporte		(n_planetas+1);
+	matrizint matriz_tp (MAXLINHAS+1, vector<int> (n_planetas+1));
 
 	for (int planeta = 1 ; planeta <= n_planetas ; planeta++){
 		int destino;
 		cin >> destino;
 
-		v_teleporte[planeta] = destino;
+		matriz_tp[0][planeta] = destino;
 	}
 
-	for (int consulta = 0 ; consulta < n_consultas ; consulta++){
-		int origem, n_passos;
-		cin >> origem >> n_passos;
+	monta_matriz(matriz_tp, n_planetas);
+	
+	for (int consulta = 1 ; consulta <= n_consultas ; consulta++){
+		int origem, viagens;
+		cin >> origem >> viagens;
 
-		int destino = teleporta_passos (v_teleporte, n_planetas, origem, n_passos);
+		int destino = viaja (matriz_tp, origem, viagens);
 		cout << destino << endl;
 	}
 }
