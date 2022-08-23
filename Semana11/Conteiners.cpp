@@ -30,7 +30,7 @@ int main() {
 	//imprime_vetor ();
 
 	//imprimem a quantia de cada espaco
-	for (ll espaco = 1 ; espaco < n_espacos ; espaco++){
+	for (ll espaco = 1 ; espaco <= n_espacos ; espaco++){
 		ll c_atual = 0;
 
 		//coloca os pedidos que devem ser atendidos na fila
@@ -47,12 +47,17 @@ int main() {
 
 		//passa pelos pedidos atuais e verifica se deve somar agora
 		//USAR INDICE
-		for (auto a = pedidos.begin() ; a < pedidos.end() ; a++){
-			if ((*a).second % (*a).first == 0)
+		auto it = pedidos.begin();
+		for (int indice = 0 ; indice < pedidos.size() ; indice++){
+			if (pedidos[indice].second % pedidos[indice].first == 0)
 				c_atual++;
-			(*a).second--;
-			if ((*a).second == 0)
-				pedidos.erase(a);
+			pedidos[indice].second--;
+			it++;
+			if (pedidos[indice].second == 0){
+				it--;
+				indice--;
+				pedidos.erase(it);
+			}
 		}
 
 		cout << c_atual << " ";
